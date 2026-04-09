@@ -1,0 +1,49 @@
+{
+  "ticker": "AKSO NO",
+  "slug": "akso_no",
+  "corpus_version": "2026-04-02",
+  "created_at": "2026-04-08T23:49:35+00:00",
+  "last_refreshed_at": "2026-04-08T23:49:35+00:00",
+  "parser_version": "1.1",
+  "chunking_version": "1.1",
+  "sources": [
+    {
+      "connector": "company_ir",
+      "last_fetched": "2026-04-08T23:49:35+00:00",
+      "doc_count": 14,
+      "status": "fresh",
+      "error_message": null,
+      "refresh_reason": "ingested_from_data/raw"
+    },
+    {
+      "connector": "newsweb",
+      "last_fetched": "2026-04-08T23:49:35+00:00",
+      "doc_count": 24,
+      "status": "fresh",
+      "error_message": null,
+      "refresh_reason": "ingested_from_data/raw"
+    },
+    {
+      "connector": "web_search",
+      "last_fetched": "2026-04-08T23:49:35+00:00",
+      "doc_count": 37,
+      "status": "fresh",
+      "error_message": null,
+      "refresh_reason": "ingested_from_data/raw"
+    },
+    {
+      "connector": "yfinance",
+      "last_fetched": "2026-04-08T23:49:35+00:00",
+      "doc_count": 3,
+      "status": "fresh",
+      "error_message": null,
+      "refresh_reason": "ingested_from_data/raw"
+    }
+  ],
+  "total_documents": 78,
+  "total_chunks": 500,
+  "metadata": {
+    "company_name": "Aker Solutions",
+    "source": "data/raw"
+  }
+}

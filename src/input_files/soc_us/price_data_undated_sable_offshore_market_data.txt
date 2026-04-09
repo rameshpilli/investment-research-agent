@@ -1,0 +1,10 @@
+Document: Sable Offshore market data
+Type: price_data
+Source: Yahoo Finance
+Date: undated
+URL: https://finance.yahoo.com/quote/SOC
+Doc ID: 228a7c9787b9ad45a32ada9327ee4d558f74ecde30eb100d7bea0d8e245d5a24
+Text length: 834 chars
+======================================================================
+
+Latest market summary for SOC. Recent rows: [{'Open': 13.609999656677246, 'High': 15.3149995803833, 'Low': 13.5, 'Close': 14.369999885559082, 'Volume': 15510100, 'Dividends': 0.0, 'Stock Splits': 0.0}, {'Open': 15.0, 'High': 15.770000457763672, 'Low': 13.687999725341797, 'Close': 14.170000076293945, 'Volume': 8741500, 'Dividends': 0.0, 'Stock Splits': 0.0}, {'Open': 14.319999694824219, 'High': 14.550000190734863, 'Low': 13.920000076293945, 'Close': 14.40999984741211, 'Volume': 4633600, 'Dividends': 0.0, 'Stock Splits': 0.0}, {'Open': 14.399999618530273, 'High': 19.25, 'Low': 14.260000228881836, 'Close': 16.579999923706055, 'Volume': 19809500, 'Dividends': 0.0, 'Stock Splits': 0.0}, {'Open': 17.0, 'High': 17.5, 'Low': 16.111000061035156, 'Close': 17.450000762939453, 'Volume': 7370400, 'Dividends': 0.0, 'Stock Splits': 0.0}]

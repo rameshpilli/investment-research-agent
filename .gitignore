@@ -1,0 +1,15 @@
+# Commit uv.lock with pyproject.toml so `uv sync` is reproducible (do not gitignore it).
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.venv/
+.chainlit/
+.files/
+src/.env
+implementation_plan_v2.md
+interview Q&A.md
+my-notes-do-not-delete.md
+project-requirements.md
+src/docs/sdk_comparison.md
+*.egg-info/

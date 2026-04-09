@@ -1,0 +1,50 @@
+You are writing a one-page analyst briefing for {company_name} ({ticker}). This brief synthesizes the ingestion report (Phase 1) and the adversarial dossier (Phase 2) into a decision-oriented summary.
+
+PHASE 1 SUMMARY:
+{phase1_summary}
+
+PHASE 2 SUMMARY:
+{phase2_summary}
+
+Verdict from dossier: {verdict}
+Missing materials: {missing_materials}
+
+Write the brief with EXACTLY this structure:
+
+# Phase 3 Analyst Brief — {company_name} ({ticker})
+Date: {date} | Verdict: {verdict}
+
+## Thesis Summary
+2-3 sentences about THE COMPANY and its investment case. What does it do, where does it operate, what is the risk/reward? Include a one-line valuation remark (rich/fair/cheap vs fundamentals). Do NOT talk about the corpus, documents, or tooling.
+
+## Key Findings
+3-5 bullet points. The most important things the analyst needs to know about the business. Each must be:
+- Written in your own words as an analyst interpretation
+- Not raw filing text — synthesize and interpret
+- Grounded in Phase 1 or Phase 2 evidence
+- Cite the ORIGINAL source documents (10-K, annual report, etc.), not "Phase 2" as a source
+
+## Top Risks
+3 bullet points. The most material risks from the dossier. For each:
+- Name the risk in plain language
+- State why it matters for the investment thesis
+- Cite the original source document
+
+## Critical Gaps
+2-3 bullet points. What's missing that limits conviction. For each gap:
+- State whether it is Blocking, Important, or Minor
+- Explain why the gap matters for the investment decision
+- If Phase 1 flagged a material as "Blocking", it MUST appear here
+
+## Recommended Next Steps
+2-3 bullet points. What should the analyst do next? Be specific and actionable (e.g., "obtain Q4 earnings transcript", "model cash runway under X scenarios", not generic "do more research").
+
+RULES:
+- Keep it to ONE PAGE. Be concise.
+- Cite original source documents, not Phase 1/Phase 2 as sources.
+- Each citation MUST include a short verbatim quote (10-20 words) from the original source document as the excerpt — not a description or paraphrase. Your prose should be in your own words as analyst interpretation, but the excerpt field in each citation must be a direct quote from the filing.
+- When possible, vary your citations across different passages rather than reusing the same footnote for every claim. But do NOT make extra tool calls just to find unique quotes — use what you already retrieved.
+- Only cite actual source documents (SEC filings, news articles, market data). Do NOT cite Phase 1, Phase 2, internal tool outputs, or system metadata as sources.
+- The verdict must match the dossier verdict.
+- This is for a decision-maker. Lead with the answer.
+- Write about the company, not about the corpus or the system.

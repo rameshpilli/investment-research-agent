@@ -1,0 +1,55 @@
+# Root-level compose file — run `docker compose up --build` from the repo root.
+# The MCP-first runtime surface is intentionally small:
+#   - qdrant: shared vector store
+#   - mcp:    Streamable HTTP MCP server (primary programmatic interface)
+#   - ui:     Chainlit analyst interface that runs the pipeline locally and reaches tools via MCP
+
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+  mcp:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    command: ["/bin/sh", "-c", "python -m src.services.mcp_http"]
+    env_file: src/.env
+    environment:
+      RESEARCH_SRC_ROOT: "/app/src"
+      RESEARCH_MCP_PORT: "${RESEARCH_MCP_PORT:-8081}"
+      PORT: "${RESEARCH_MCP_PORT:-8081}"
+      RESEARCH_QDRANT_URL: "http://qdrant:6333"
+    ports:
+      - "${RESEARCH_MCP_PORT:-8081}:${RESEARCH_MCP_PORT:-8081}"
+    depends_on:
+      - qdrant
+    volumes:
+      - ./src/data:/app/src/data
+
+  ui:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    command: ["/bin/sh", "-c", "chainlit run src/app.py --host 0.0.0.0 --port ${RESEARCH_UI_PORT:-8000}"]
+    env_file: src/.env
+    environment:
+      RESEARCH_SRC_ROOT: "/app/src"
+      CHAINLIT_APP_ROOT: "/app/src"
+      PORT: "${RESEARCH_UI_PORT:-8000}"
+      RESEARCH_MCP_URL: "http://mcp:${RESEARCH_MCP_PORT:-8081}/mcp"
+      RESEARCH_QDRANT_URL: "http://qdrant:6333"
+    depends_on:
+      - mcp
+      - qdrant
+    ports:
+      - "${RESEARCH_UI_PORT:-8000}:${RESEARCH_UI_PORT:-8000}"
+    volumes:
+      - ./src/data:/app/src/data
+      - ./src/output:/app/src/output
+
+volumes:
+  qdrant_storage:

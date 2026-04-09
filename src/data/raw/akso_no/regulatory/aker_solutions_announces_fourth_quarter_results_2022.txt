@@ -1,0 +1,10 @@
+Document: Aker Solutions announces fourth-quarter results 2022
+Type: regulatory_announcement
+Source: Oslo Bors Newsweb (via web search)
+Date: undated
+URL: https://www.energy-pedia.com/news/general/aker-solutions-announces-fourth-quarter-results-2022-190483
+Doc ID: e4334343a3b676c082c8519b7d64b7994dec33c2b8fe45d9f4a33228185c0146
+Text length: 139 chars
+======================================================================
+
+In the quarter,AkerSolutionswon record-high order intake of NOK 59.3 billion, which represents a book-to-bill ratio of 4.8x for the period.

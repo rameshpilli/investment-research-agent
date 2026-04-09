@@ -1,0 +1,10 @@
+Document: Aker Solutions ASA: Third-Quarter Results 2024 | Aker Solutions
+Type: regulatory_announcement
+Source: Oslo Bors Newsweb (via web search)
+Date: undated
+URL: https://www.akersolutions.com/news/news-archive/2024/aker-solutions-asathird-quarter-results-2024/
+Doc ID: 2df3e6bb7e4b02edaa95332ae47073850ae9c76790e22312a34d54c2c9a01c65
+Text length: 247 chars
+======================================================================
+
+EBITDA excluding special items increased to NOK 1.2 billion, or 9.2 percent margin, from NOK 214 million in the year-ago period. The financial results in the quarter were driven by strong operational performance across Aker Solutions’ business ...

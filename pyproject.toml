@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "investment-research"
+version = "0.2.0"
+description = "Corpus-based investment research workflow powered by the Claude Agent SDK."
+readme = "src/README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp>=3.10.0",
+  "claude-agent-sdk>=0.1.50",
+  "beautifulsoup4>=4.12.0",
+  "chainlit>=1.1.0",
+  "fastapi>=0.111.0",
+  "httpx>=0.27.0",
+  "pydantic>=2.7.0",
+  "pypdf>=5.0.0",
+  "python-dotenv>=1.0.0",
+  "qdrant-client>=1.9.0",
+  "uvicorn>=0.30.0",
+  "yfinance>=0.2.40",
+  "ddgs>=9.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = [
+  "src*",
+]

@@ -1,0 +1,10 @@
+Document: AkerSolutions- Wikipedia
+Type: news
+Source: DuckDuckGo Search
+Date: undated
+URL: https://en.wikipedia.org/wiki/Aker_Solutions
+Doc ID: 5d399a28e3a23e47732ec87b23a371f609c4888e82a87eb3be8f6b5b61819dcb
+Text length: 288 chars
+======================================================================
+
+AkerSolutionsASA is a Norwegian engineering firm headquartered in Oslo. The firm's production is focused on energy infrastructure, including systems and services required to de-carbonize oil and gas production, build wind-to-grid infrastructure and engineer CO2 capture and sequestration.

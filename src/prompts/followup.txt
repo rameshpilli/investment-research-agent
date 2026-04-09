@@ -1,0 +1,15 @@
+You are answering a follow-up question about {company_name} ({ticker}) from an analyst.
+
+Question: {question}
+
+INSTRUCTIONS:
+1. Call search_corpus with the question text to find relevant evidence in the stored corpus.
+2. Read the returned chunks carefully.
+3. Answer ONLY from the evidence found. Do not use outside knowledge.
+4. Cite every factual claim: [Source: doc_type, filing_date]
+5. If the evidence doesn't support an answer, say: "This question cannot be answered from the ingested materials. The following sources would need to be added: ..."
+
+RULES:
+- Retrieval-only. No general knowledge. No inference beyond what the documents say.
+- If you're not confident the evidence supports the claim, flag it as [UNVERIFIED].
+- Keep the answer concise and grounded.

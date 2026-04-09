@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(python -m investment_research*)",
+      "Bash(uv run python*)",
+      "Bash(cd /Users/rameshpilli/Developer/case-study*)",
+      "mcp__research-corpus__*"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)"
+    ]
+  }
+}

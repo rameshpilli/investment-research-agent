@@ -767,16 +767,73 @@ class CorpusStore:
 
     def _ensure_collection(self, profile: CompanyConfig, client: QdrantClient) -> None:
         collection_name = self._collection_name(profile)
+        needs_reindex = False
         if client.collection_exists(collection_name):
+            info = client.get_collection(collection_name)
+            if info.points_count == 0:
+                needs_reindex = True
+        else:
+            client.create_collection(
+                collection_name=collection_name,
+                vectors_config=VectorParams(
+                    size=self.embedding_service.dimensions,
+                    distance=Distance.COSINE,
+                ),
+                on_disk_payload=True,
+            )
+            needs_reindex = True
+
+        if needs_reindex:
+            self._reindex_from_sqlite(profile, client)
+
+    def _reindex_from_sqlite(self, profile: CompanyConfig, client: QdrantClient) -> None:
+        """Re-index vectors from SQLite chunks into Qdrant.
+
+        This handles the case where the Qdrant instance (e.g. Docker) is
+        empty but the SQLite store already has ingested chunks (e.g. from
+        a prior local ingestion run).
+
+        Note: upserts directly to *client* to avoid recursion through
+        index_chunks → _ensure_collection.
+        """
+        chunks = self.get_all_chunks(profile)
+        if not chunks:
             return
-        client.create_collection(
-            collection_name=collection_name,
-            vectors_config=VectorParams(
-                size=self.embedding_service.dimensions,
-                distance=Distance.COSINE,
-            ),
-            on_disk_payload=True,
+        documents = self.get_all_documents(profile)
+        documents_by_id = {d.doc_id: d for d in documents}
+        valid_chunks = [c for c in chunks if c.doc_id in documents_by_id]
+        if not valid_chunks:
+            return
+        logger.info(
+            "Qdrant empty for %s — re-indexing %d chunks from SQLite",
+            profile.ticker, len(valid_chunks),
         )
+        collection_name = self._collection_name(profile)
+        batch_size = 128
+        for i in range(0, len(valid_chunks), batch_size):
+            batch = valid_chunks[i : i + batch_size]
+            embeddings = self.embedding_service.embed_texts([c.text for c in batch])
+            points = []
+            for chunk, embedding in zip(batch, embeddings):
+                doc = documents_by_id[chunk.doc_id]
+                points.append(
+                    PointStruct(
+                        id=self._qdrant_point_id(chunk.chunk_id),
+                        vector=embedding,
+                        payload={
+                            "chunk_id": chunk.chunk_id,
+                            "doc_id": chunk.doc_id,
+                            "doc_type": doc.doc_type,
+                            "source_name": doc.source_name,
+                            "source_key": doc.source_key,
+                            "filing_date": doc.filing_date,
+                            "page_or_section": chunk.page_or_section,
+                            "text": chunk.text,
+                        },
+                    )
+                )
+            client.upsert(collection_name=collection_name, points=points, wait=True)
+            logger.info("  indexed batch %d–%d / %d", i + 1, i + len(batch), len(valid_chunks))
 
     @staticmethod
     def _qdrant_point_id(chunk_id: str) -> str:

@@ -227,44 +227,34 @@ async def answer_follow_up(
     except FileNotFoundError:
         return "No corpus available for this company. Please run data ingestion first."
 
+    # Build a lightweight fallback from a direct search so the agent has
+    # something to return even if the SDK call fails.  This is *not* a
+    # gate — the agent always gets a chance to search via MCP tools.
+    fallback = f"Question: {question}\n\nNo pre-fetched evidence available."
     try:
         chunks = corpus_store.search_chunks(profile, question, limit=settings.followup_retrieval_limit)
+        documents_by_id = {d.doc_id: d for d in snapshot.documents}
+        citations = []
+        for chunk in chunks[:4]:
+            doc = documents_by_id.get(chunk.doc_id)
+            if doc:
+                citations.append(make_citation(chunk, doc))
+        if citations:
+            evidence_lines = [
+                f"- {c['content']} ({c['source_name']}, {c.get('doc_type', 'document')})"
+                for c in citations
+            ]
+            fallback = "\n".join([
+                f"Question: {question}",
+                "",
+                "Based on the stored corpus, the most relevant evidence is:",
+                *evidence_lines,
+                "",
+                "Citations:",
+                *[f"[{i+1}] {c['source_name']} ({c.get('doc_type', 'document')}, {c.get('filing_date', 'n/a')})" for i, c in enumerate(citations)],
+            ])
     except Exception as e:
-        logger.error("Corpus search failed for %s: %s", profile.ticker, e, exc_info=True)
-        return f"Search failed: {e}. Please try again or re-ingest the corpus."
-
-    if not _has_question_overlap(question, chunks):
-        return (
-            "This question cannot be answered from the ingested materials. "
-            "The following sources would need to be added: newer filings, additional regulatory releases, or more recent news."
-        )
-
-    documents_by_id = {d.doc_id: d for d in snapshot.documents}
-    citations = []
-    for chunk in chunks[:4]:
-        doc = documents_by_id.get(chunk.doc_id)
-        if doc:
-            citations.append(make_citation(chunk, doc))
-
-    if not citations:
-        return (
-            "This question cannot be answered from the ingested materials. "
-            "The following sources would need to be added: newer filings, additional regulatory releases, or more recent news."
-        )
-
-    evidence_lines = [
-        f"- {c['content']} ({c['source_name']}, {c.get('doc_type', 'document')})"
-        for c in citations
-    ]
-    fallback = "\n".join([
-        f"Question: {question}",
-        "",
-        "Based on the stored corpus, the most relevant evidence is:",
-        *evidence_lines,
-        "",
-        "Citations:",
-        *[f"[{i+1}] {c['source_name']} ({c.get('doc_type', 'document')}, {c.get('filing_date', 'n/a')})" for i, c in enumerate(citations)],
-    ])
+        logger.warning("Pre-fetch for fallback failed for %s: %s", profile.ticker, e)
 
     tool_server = ResearchToolServer(profile, corpus_store)
     run_result = await agent.run_followup(

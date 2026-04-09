@@ -133,6 +133,11 @@ def _extract_price_rows(
     if not hasattr(history, "iterrows"):
         return rows
     for date_idx, row in history.iterrows():
+        import math
+        close = row.get("Close", 0)
+        # Skip rows where close price is NaN (e.g. incomplete intraday data)
+        if isinstance(close, float) and math.isnan(close):
+            continue
         rows.append({
             "ticker": yf_ticker,
             "company_name": company_name,
@@ -142,7 +147,7 @@ def _extract_price_rows(
             "open": round(row.get("Open", 0), 2),
             "high": round(row.get("High", 0), 2),
             "low": round(row.get("Low", 0), 2),
-            "close": round(row.get("Close", 0), 2),
+            "close": round(close, 2),
             "volume": int(row.get("Volume", 0)),
         })
     return rows
@@ -250,12 +255,15 @@ def _extract_summary(
 
     # Computed performance from price history
     if price_rows:
+        import math
         latest = price_rows[-1]
-        for label, days in [("1m", 21), ("3m", 63), ("6m", 126), ("1y", 252)]:
-            if len(price_rows) > days:
-                old = price_rows[-(days + 1)]["close"]
-                if old > 0:
-                    summary[f"return_{label}"] = round((latest["close"] - old) / old * 100, 2)
+        curr = latest["close"]
+        if isinstance(curr, (int, float)) and not math.isnan(curr) and curr > 0:
+            for label, days in [("1m", 21), ("3m", 63), ("6m", 126), ("1y", 252)]:
+                if len(price_rows) > days:
+                    old = price_rows[-(days + 1)]["close"]
+                    if isinstance(old, (int, float)) and not math.isnan(old) and old > 0:
+                        summary[f"return_{label}"] = round((curr - old) / old * 100, 2)
 
     # Strip None values
     return {k: v for k, v in summary.items() if v is not None}

@@ -375,6 +375,51 @@ def verify_citations_against_corpus(
                         match_reason = "Excerpt key tokens found in corpus text (structured source)"
                         break
 
+            # --- Pass 5: token overlap ratio ---
+            # Handles paraphrased excerpts (e.g. from Norwegian filings) where
+            # exact substrings won't match but most meaningful tokens appear.
+            _token_stop = frozenset({
+                "the", "and", "for", "are", "but", "not", "you", "all", "can",
+                "has", "was", "one", "our", "out", "its", "may", "that", "this",
+                "with", "have", "from", "been", "were", "what", "when", "where",
+                "which", "about", "does", "they", "their", "will", "would",
+                "could", "should", "also", "than", "into", "each", "other",
+                "more", "some", "such", "these", "those",
+            })
+            excerpt_tokens = {
+                t for t in re.findall(r"[a-z0-9]+", normalized_excerpt)
+                if len(t) > 2 and t not in _token_stop
+            }
+            if len(excerpt_tokens) >= 3:
+                source_tokens = set(re.findall(r"[a-z0-9]+", normalized_source))
+                overlap = excerpt_tokens & source_tokens
+                ratio = len(overlap) / len(excerpt_tokens)
+                if ratio >= 0.65 and len(overlap) >= 3:
+                    matched = True
+                    match_reason = f"Excerpt token overlap {ratio:.0%} ({len(overlap)}/{len(excerpt_tokens)} tokens)"
+                    break
+
+            # --- Pass 6: fuzzy substring matching ---
+            # Uses SequenceMatcher for near-matches (handles minor rephrasing,
+            # spacing differences, and translation variance).
+            if len(normalized_excerpt) >= 15:
+                from difflib import SequenceMatcher
+                # Slide a window of ~excerpt length across source, check similarity
+                elen = len(normalized_excerpt)
+                best_ratio = 0.0
+                step = max(1, elen // 4)
+                for i in range(0, max(1, len(normalized_source) - elen + 1), step):
+                    window = normalized_source[i : i + elen + 20]
+                    r = SequenceMatcher(None, normalized_excerpt, window).ratio()
+                    if r > best_ratio:
+                        best_ratio = r
+                    if r >= 0.70:
+                        matched = True
+                        match_reason = f"Excerpt fuzzy-matched (similarity: {best_ratio:.0%})"
+                        break
+                if matched:
+                    break
+
         if matched:
             verified += 1
             details.append({
@@ -827,16 +872,30 @@ def _resolve_document(citation: dict[str, Any], documents: list[Any]) -> Any | N
 
     def score(document: Any) -> int:
         s = 0
-        if title and _norm(document.title) == title:
+        doc_title_norm = _norm(document.title)
+        doc_source_norm = _norm(document.source_name)
+
+        if title and doc_title_norm == title:
             s += 6
-        elif title and title in _norm(document.title):
+        elif title and title in doc_title_norm:
             s += 3
-        if source_name and _norm(document.source_name) == source_name:
+        if source_name and doc_source_norm == source_name:
             s += 2
         if doc_type and _norm(document.doc_type) == doc_type:
             s += 2
         if filing_date and _norm(document.filing_date) == filing_date:
             s += 2
+
+        # Cross-match: LLM often puts the document title in source_name
+        # (e.g. source_name="Annual Report 2024" when corpus title is
+        # "Annual Report 2024" and corpus source_name is "Company IR").
+        if source_name and doc_title_norm == source_name:
+            s += 5
+        elif source_name and source_name in doc_title_norm:
+            s += 3
+        if title and doc_source_norm and title in doc_source_norm:
+            s += 2
+
         # Bridge LLM source labels to connector keys (yfinance / web_search)
         sk = getattr(document, "source_key", "") or ""
         if source_name:

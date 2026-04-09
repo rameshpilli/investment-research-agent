@@ -33,15 +33,39 @@ from src.services.mcp_server import TOOLS_ANTHROPIC
 
 logger = logging.getLogger(__name__)
 
-# When the adversarial dossier exhausts turns during tool use, the SDK can stop with
+# When a phase exhausts turns during tool use, the SDK can stop with
 # stop_reason=tool_use and no structured_output. One follow-up user turn (no tools)
 # reuses the same session context to emit the required JSON schema.
-_STRUCTURED_OUTPUT_CONTINUATION_PROMPT = """\
+_STRUCTURED_OUTPUT_CONTINUATION_PROMPTS: dict[str, str] = {
+    "gap-analyst": """\
+You stopped before returning the required structured JSON ingestion report (often after many tool calls).
+
+Do not call any more tools. Synthesize the Phase 1 ingestion report using only evidence already retrieved in this conversation.
+
+Return ONLY the structured JSON matching the configured output schema (source_coverage, corpus_freshness, quality_assessment, missing_context). Every factual claim must include citations tied to documents you already inspected.
+""",
+    "adversarial-researcher": """\
 You stopped before returning the required structured JSON dossier (often after many tool calls).
 
 Do not call any more tools. Synthesize the Phase 2 adversarial dossier using only evidence already retrieved in this conversation.
 
 Return ONLY the structured JSON matching the configured output schema (executive_verdict, thesis_summary, company_overview, valuation_context, top_nonconsensus_risks, contradictions_tone_shifts, what_would_change_verdict, information_gaps). Every factual claim must include citations tied to documents you already inspected.
+""",
+    "briefing-writer": """\
+You stopped before returning the required structured JSON analyst brief (often after many tool calls).
+
+Do not call any more tools. Synthesize the Phase 3 analyst brief using only evidence already retrieved in this conversation.
+
+Return ONLY the structured JSON matching the configured output schema (thesis_summary, key_findings, top_risks, critical_gaps, recommended_next_steps). Every factual claim must include citations tied to documents you already inspected.
+""",
+}
+
+_DEFAULT_CONTINUATION_PROMPT = """\
+You stopped before returning the required structured JSON output (often after many tool calls).
+
+Do not call any more tools. Synthesize the report using only evidence already retrieved in this conversation.
+
+Return ONLY the structured JSON matching the configured output schema. Every factual claim must include citations tied to documents you already inspected.
 """
 
 # Callback type for UI tool-call notifications.
@@ -451,7 +475,10 @@ class ResearchAgent:
                     len(hook_state.calls),
                 )
                 sid = getattr(result_message, "session_id", None) or "default"
-                await client.query(_STRUCTURED_OUTPUT_CONTINUATION_PROMPT, session_id=sid)
+                continuation = _STRUCTURED_OUTPUT_CONTINUATION_PROMPTS.get(
+                    config.name, _DEFAULT_CONTINUATION_PROMPT
+                )
+                await client.query(continuation, session_id=sid)
                 text_more, result_more = await drain_response()
                 if result_more and getattr(result_more, "structured_output", None) is not None:
                     c0 = float(result_message.total_cost_usd or 0)

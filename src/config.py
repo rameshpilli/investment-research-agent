@@ -98,7 +98,7 @@ class Settings:
     chunk_size: int = _env_int("RESEARCH_CHUNK_SIZE", 1200)
     chunk_overlap: int = _env_int("RESEARCH_CHUNK_OVERLAP", 200)
     max_docs_per_source: int = _env_int("RESEARCH_MAX_DOCS_PER_SOURCE", 30)
-    max_chunks_per_company: int = _env_int("RESEARCH_MAX_CHUNKS_PER_COMPANY", 500)
+    max_chunks_per_company: int = _env_int("RESEARCH_MAX_CHUNKS_PER_COMPANY", 1500)
 
     # ── Data sources ───────────────────────────────────────────────
     years_of_filings: int = _env_int("RESEARCH_FILINGS_YEARS", 3)

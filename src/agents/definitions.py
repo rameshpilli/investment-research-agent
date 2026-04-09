@@ -80,6 +80,7 @@ _PHASE_CONFIGS: dict[str, AgentPhaseConfig] = {
         effort="low",
         max_budget_usd=settings.phase1_max_budget_usd,
         max_turns=_phase1_max_turns(),
+        use_stateful_client=True,
     ),
     "dossier": AgentPhaseConfig(
         name="adversarial-researcher",
@@ -113,6 +114,7 @@ _PHASE_CONFIGS: dict[str, AgentPhaseConfig] = {
         effort="low",
         max_budget_usd=settings.phase3_max_budget_usd,
         max_turns=settings.llm_max_tool_rounds,
+        use_stateful_client=True,
     ),
     "followup": AgentPhaseConfig(
         name="followup-analyst",

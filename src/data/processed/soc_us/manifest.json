@@ -2,14 +2,14 @@
   "ticker": "SOC US",
   "slug": "soc_us",
   "corpus_version": "2026-04-02",
-  "created_at": "2026-04-08T20:45:30+00:00",
-  "last_refreshed_at": "2026-04-08T20:45:30+00:00",
+  "created_at": "2026-04-09T02:00:07+00:00",
+  "last_refreshed_at": "2026-04-09T02:00:07+00:00",
   "parser_version": "1.1",
   "chunking_version": "1.1",
   "sources": [
     {
       "connector": "edgar",
-      "last_fetched": "2026-04-08T20:45:30+00:00",
+      "last_fetched": "2026-04-09T02:00:07+00:00",
       "doc_count": 30,
       "status": "fresh",
       "error_message": null,
@@ -17,7 +17,7 @@
     },
     {
       "connector": "web_search",
-      "last_fetched": "2026-04-08T20:45:30+00:00",
+      "last_fetched": "2026-04-09T02:00:07+00:00",
       "doc_count": 36,
       "status": "fresh",
       "error_message": null,
@@ -25,7 +25,7 @@
     },
     {
       "connector": "yfinance",
-      "last_fetched": "2026-04-08T20:45:30+00:00",
+      "last_fetched": "2026-04-09T02:00:07+00:00",
       "doc_count": 3,
       "status": "fresh",
       "error_message": null,
@@ -33,7 +33,7 @@
     }
   ],
   "total_documents": 69,
-  "total_chunks": 500,
+  "total_chunks": 1453,
   "metadata": {
     "company_name": "Sable Offshore",
     "source": "data/raw"

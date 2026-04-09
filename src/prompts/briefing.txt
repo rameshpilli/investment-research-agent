@@ -22,7 +22,7 @@ Date: {date} | Verdict: {verdict}
 - Written in your own words as an analyst interpretation
 - Not raw filing text — synthesize and interpret
 - Grounded in Phase 1 or Phase 2 evidence
-- Cite the ORIGINAL source documents (10-K, annual report, etc.), not "Phase 2" as a source
+- Cite the ORIGINAL source documents (10-K, 10-Q, 8-K, news, market data), not "Phase 2" as a source. Draw citations from multiple document types when possible — not just the 10-K
 
 ## Top Risks
 3 bullet points. The most material risks from the dossier. For each:

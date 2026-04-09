@@ -161,10 +161,12 @@ def valuation_snapshot_text(snapshot: dict | None) -> str:
         lines.extend(["", f"Short Interest: {pct_str} of float, ratio {snapshot.get('short_ratio', '?')} days"])
 
     # Performance
+    import math
     perfs = []
     for label, key in [("1M", "return_1m"), ("3M", "return_3m"), ("6M", "return_6m"), ("1Y", "return_1y")]:
-        if key in snapshot:
-            perfs.append(f"{label}: {snapshot[key]:+.1f}%")
+        val = snapshot.get(key)
+        if val is not None and isinstance(val, (int, float)) and not math.isnan(val):
+            perfs.append(f"{label}: {val:+.1f}%")
     if perfs:
         lines.extend(["", "Performance: " + " | ".join(perfs)])
 

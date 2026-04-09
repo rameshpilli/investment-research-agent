@@ -1,41 +1,53 @@
 # Phase 1 Ingestion Report — Sable Offshore (SOC US)
 
 ## Source Coverage Matrix
-| Source | Document | What The Analyst Can Expect To Find |
-| --- | --- | --- |
-| SEC EDGAR | 10-K Annual Report FY2025 (filed 2026-02-27) | Business description and forward-looking operations plan focused on Santa Ynez Unit offshore production restart. Risk factors and regulatory compliance discussions including pipeline transportation challenges. Complex warrant and financial instrument fair value disclosures. Limited traditional revenue metrics due to suspended operations. [1] |
-| SEC EDGAR | 10-Q Quarterly Reports Q1-Q3 2025 | Quarterly updates on operational restoration progress and financial position during the production suspension period. Limited financial performance metrics as operations remain suspended. [UNVERIFIED] |
-| SEC EDGAR | 26 × 8-K Current Reports (2025-2026) | Material event disclosures covering the period from April 2025 through March 2026. Likely includes operational updates, regulatory developments, and corporate actions during the production restart process. [UNVERIFIED] |
-| DuckDuckGo Search | 36 news articles and web sources | Mix of earnings coverage, analyst commentary, and operational updates. Includes third-party analysis of financial distress and operational challenges. [2] |
-| Yahoo Finance | Price history and market summary | Stock price movements and market data for valuation context and market sentiment analysis. [UNVERIFIED] |
+
+
+| Source                        | Document                       | What The Analyst Can Expect To Find                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SEC EDGAR - Annual Reports    | 10-K FY2025 (filed 2026-02-27) | Comprehensive operational overview focused on Santa Ynez Unit offshore assets including 76,000 acres across 16 federal leases, three platforms (Hondo, Harmony, Heritage) servicing 112 wells with 102 undrilled opportunities, detailed pipeline transportation challenges through Segments 324 and 325, extensive regulatory compliance requirements, and forward-looking production restart plans. [1] [1] |
+| SEC EDGAR - Quarterly Reports | 10-Q Q1-Q3 2025 (3 filings)    | Pre-revenue operational period with zero oil and gas sales across all quarters, substantial cash burn through operations and maintenance expenses ($164.3 million nine-month total), going concern qualifications, detailed litigation updates, and progression toward production restart milestones including regulatory approvals. [2] [2]                                                                  |
+| SEC EDGAR - Current Reports   | 8-K Filings (26 reports, 2025) | Material corporate events including quarterly earnings releases, significant private equity financing ($250 million placement), and other operational updates. Recent filings cover earnings announcements and capital raising activities essential for funding restart operations. [3] [4]                                                                                                                   |
+| Web Search News               | News Articles (36 documents)   | Market coverage including stock performance analysis, earnings expectations, and business development updates. Coverage includes references to significant price volatility and analyst projections for transition from losses to profitability. [5] [6]                                                                                                                                                      |
+
 
 ## Corpus Freshness
-Last refreshed: 2026-04-08T20:45:30+00:00
 
-| Connector | Status | Last Fetched | Documents | Refresh Reason |
-| --- | --- | --- | --- | --- |
-| edgar | fresh | 2026-04-08T20:45:30+00:00 | 0 | ingested_from_data/raw |
-| web_search | fresh | 2026-04-08T20:45:30+00:00 | 0 | ingested_from_data/raw |
-| yfinance | fresh | 2026-04-08T20:45:30+00:00 | 0 | ingested_from_data/raw |
+Last refreshed: 2026-04-09T02:00:07+00:00
+
+
+| Connector  | Status | Last Fetched              | Documents | Refresh Reason         |
+| ---------- | ------ | ------------------------- | --------- | ---------------------- |
+| edgar      | fresh  | 2026-04-09T02:00:07+00:00 | 30        | ingested_from_data/raw |
+| web_search | fresh  | 2026-04-09T02:00:07+00:00 | 36        | ingested_from_data/raw |
+| yfinance   | fresh  | 2026-04-09T02:00:07+00:00 | 3         | ingested_from_data/raw |
+
 
 ## Quality Assessment
-Corpus provides comprehensive SEC filing coverage with fresh data as of April 8, 2026. Total 69 documents span regulatory filings (30), news/web sources (36), and market data (3). However, content quality is mixed due to Sable's suspended operations status. Major SEC filings contain extensive regulatory and operational restart discussions but limited traditional financial performance metrics. The high volume of 8-K filings (26 reports) suggests significant material event activity during the operational suspension period. [1]
+
+The corpus provides adequate recent regulatory coverage but has notable historical and qualitative gaps. Core SEC filings are present for 2025 operations with comprehensive current events (26 8-K filings), though only one annual report limits historical context. The 69 total documents span regulatory filings (30), news coverage (36), and market data (3), offering breadth across information types. However, absence of management transcripts eliminates access to tone, guidance, and Q&A insights critical for investment analysis. [UNVERIFIED: Market data document content could not be retrieved despite presence in corpus] [1] [2]
 
 ## Missing Context Report
-| Expected Material | Criticality | Severity | Why It Matters | Status |
-| --- | --- | --- | --- | --- |
-| 10-K | Critical | Important | Only 1 annual filing present vs expected 2 over 3-year lookback. Missing prior year 10-K limits historical trend analysis and baseline establishment for operational turnaround assessment. | Present |
-| 10-Q | Important | Minor | All 3 expected quarterly filings present covering full year operational transition period through Q3 2025. | Present |
-| 8-K | Important | Minor | Comprehensive material event coverage with 26 current reports providing detailed operational and regulatory updates during critical restart phase. | Present |
-| transcript | Nice-to-have | Minor | No earnings call transcripts available. Management commentary and Q&A would provide valuable insights into restart timeline, cash burn rate, and operational challenges not captured in SEC filings. [3] | Missing |
-| price_history | Important | Minor | Stock price data present for market sentiment and valuation context analysis. | Present |
-| competitor_filings | Nice-to-have | Minor | No peer company filings for offshore oil operators available. Comparative operational metrics and regulatory approaches would strengthen competitive positioning analysis. | Missing |
+
+
+| Expected Material                | Criticality  | Severity  | Why It Matters                                                                                                                                                                                                                                                         | Status  |
+| -------------------------------- | ------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| Historical Annual Reports (10-K) | Important    | Important | Only one annual report (FY2025) limits historical trend analysis, peer comparisons, and ability to assess management's track record over multiple cycles. Additional 2-3 year historical context would strengthen conviction in operational and financial projections. | Missing |
+| Management Call Transcripts      | Nice-to-have | Minor     | No earnings call transcripts eliminate access to management tone, forward guidance nuances, analyst Q&A insights, and unscripted commentary that often reveals strategic priorities and operational challenges beyond prepared statements. [7]                         | Missing |
+| Competitor Benchmark Filings     | Nice-to-have | Minor     | Absence of peer company filings (other offshore oil operators) limits ability to benchmark operational metrics, regulatory approaches, cost structures, and valuation multiples against industry standards.                                                            | Missing |
+
 
 ## Citation Verification
-- Verified citations: 2/4 (corpus-checked)
-- Verification rate: 50%
+
+- Verified citations: 9/11 (corpus-checked)
+- Verification rate: 82%
 
 ## Citations
-[1] SEC EDGAR (10-K) dated 2026-02-27 :: "invested significant capital to safely restore production operations to SYU"
-[2] DuckDuckGo Search (news) - (Public) Sable Offshore Will Run Out Of Money By January :: "Sable Offshore Will Run Out Of Money By January"
-[3] DuckDuckGo Search (news) - All Transcripts on Sable Offshore Corp. (SOC) :: "All Transcripts on Sable Offshore Corp."
+
+[1] SEC EDGAR (10-K) dated 2026-02-27 - 10-K Annual Report FY2025 (filed 2026-02-27) :: "76,000 acres and includes 100% working interest with an average 83.6% net revenue interest"
+[2] SEC EDGAR (10-Q) dated 2025-11-13 - 10-Q Quarterly Report Q3 2025 (filed 2025-11-13) :: "Operations and maintenance expenses 79,405 25,629 164,246"
+[3] SEC EDGAR (8-K) dated 2025-11-10 - 8-K Current Report 2025-11-10 (filed 2025-11-10) :: "private placement of $250 million of the Company's common stock"
+[4] SEC EDGAR (8-K) dated 2025-05-09 - 8-K Current Report 2025-05-09 (filed 2025-05-09) :: "announcing results for the period ended March 31, 2025"
+[5] DuckDuckGo Search (news) - Sable Offshore (SOC) Crashed This Week. Here is Why. - Insider :: "After gaining over 76% in May,SableOffshoreCorp."
+[6] DuckDuckGo Search (news) - Sable Offshore (SOC) Stock Price, News & Analysis :: "expected to grow in the coming year, from ($6.39) to $1.97 per share"
+[7] DuckDuckGo Search (news) - All Transcripts on Sable Offshore Corp. (SOC) - MarketScreener :: "SABLE OFFSHORE CORP. PDF Report. Transcripts"
